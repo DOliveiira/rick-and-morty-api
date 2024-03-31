@@ -1,4 +1,5 @@
 const charsConteiner = document.querySelector('.chars-container');
+const speciesFielter = document.querySelector('#species')
 
 const API = 'https://rickandmortyapi.com/api'
 const defaultFilters = {
@@ -18,7 +19,6 @@ async function getCharacters({ name, species, gender, status, page = 1 }) {
 
 async function render(characters){
     characters.forEach((character) => {
-
         return charsConteiner.innerHTML += `
         <div class="char">
             <img src="${character.image}" alt="">
@@ -28,9 +28,15 @@ async function render(characters){
             </div>
          </div>
         `
-
     })
 }
+
+speciesFielter.addEventListener('change', async (event) => {
+    defaultFilters.species = event.target.value
+    charsConteiner.innerHTML = ''
+    const characters = await getCharacters(defaultFilters)
+    render(characters)
+})
 
 async function main(){
     const characters = await getCharacters(defaultFilters)
