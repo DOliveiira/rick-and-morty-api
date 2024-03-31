@@ -1,5 +1,7 @@
 const charsConteiner = document.querySelector('.chars-container');
 const speciesFielter = document.querySelector('#species')
+const genderFileter = document.querySelector('#gender')
+const statusFilter = document.querySelector('#status')
 
 const API = 'https://rickandmortyapi.com/api'
 const defaultFilters = {
@@ -36,6 +38,20 @@ speciesFielter.addEventListener('change', async (event) => {
     charsConteiner.innerHTML = ''
     const characters = await getCharacters(defaultFilters)
     render(characters)
+})
+
+genderFileter.addEventListener('change', async (event) =>{
+    defaultFilters.gender = event.target.value
+    charsConteiner.innerHTML = ''
+    const characters = await getCharacters(defaultFilters)
+    render (characters)
+})
+
+statusFilter.addEventListener('change', async (event) =>{
+    defaultFilters.status = event.target.value
+    charsConteiner.innerHTML = ''
+    const characters = await getCharacters(defaultFilters)
+    render (characters)
 })
 
 async function main(){
