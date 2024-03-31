@@ -3,6 +3,7 @@ const searchInput = document.querySelector('#search')
 const speciesFielter = document.querySelector('#species')
 const genderFileter = document.querySelector('#gender')
 const statusFilter = document.querySelector('#status')
+const loadMoreButton = document.querySelector('#load-more')
 
 const API = 'https://rickandmortyapi.com/api'
 const defaultFilters = {
@@ -34,37 +35,44 @@ async function render(characters){
     })
 }
 
-speciesFielter.addEventListener('change', async (event) => {
-    defaultFilters.species = event.target.value
-    charsConteiner.innerHTML = ''
-    const characters = await getCharacters(defaultFilters)
-    render(characters)
-})
+function handleFilterChange(type, event) {
+    return async () => {
+        defaultFilters[type] = event.target.value
+        charsConteiner.innerHTML = ''
+        const characters = await getCharacters(defaultFilters)
+        render(characters)
+    }
+}
 
-genderFileter.addEventListener('change', async (event) =>{
-    defaultFilters.gender = event.target.value
-    charsConteiner.innerHTML = ''
-    const characters = await getCharacters(defaultFilters)
-    render (characters)
-})
+function addListeners (){
+    speciesFielter.addEventListener('change', async (event) => {
+        handleFilterChange('species', event)()
+    })
+    
+    genderFileter.addEventListener('change', async (event) =>{
+        handleFilterChange('gender', event)()
+    })
+    
+    statusFilter.addEventListener('change', async (event) =>{
+        handleFilterChange('status', event)()
+    })
+    
+    searchInput.addEventListener('keyup', async (event) =>{
+        handleFilterChange('name', event)()
+    }) 
 
-statusFilter.addEventListener('change', async (event) =>{
-    defaultFilters.status = event.target.value
-    charsConteiner.innerHTML = ''
-    const characters = await getCharacters(defaultFilters)
-    render (characters)
-})
+    loadMoreButton.addEventListener('click', async (event) => {
+        defaultFilters.page += 1
+        const characters = await getCharacters(defaultFilters)
+        render(characters)
 
-searchInput.addEventListener('keyup', async (event) =>{
-    defaultFilters.name = event.target.value
-    charsConteiner.innerHTML = ''
-    const characters = await getCharacters(defaultFilters)
-    render (characters)
+    })
+}
 
-})
 
 async function main(){
     const characters = await getCharacters(defaultFilters)
+    addListeners()
     render(characters)
 }
 
