@@ -1,4 +1,5 @@
 const charsConteiner = document.querySelector('.chars-container');
+const searchInput = document.querySelector('#search')
 const speciesFielter = document.querySelector('#species')
 const genderFileter = document.querySelector('#gender')
 const statusFilter = document.querySelector('#status')
@@ -52,6 +53,14 @@ statusFilter.addEventListener('change', async (event) =>{
     charsConteiner.innerHTML = ''
     const characters = await getCharacters(defaultFilters)
     render (characters)
+})
+
+searchInput.addEventListener('keyup', async (event) =>{
+    defaultFilters.name = event.target.value
+    charsConteiner.innerHTML = ''
+    const characters = await getCharacters(defaultFilters)
+    render (characters)
+
 })
 
 async function main(){
